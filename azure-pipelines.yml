@@ -7,16 +7,17 @@ jobs:
   - job: MavenBuild
     steps:
     - task: Maven@3
-      displayName: 'Maven pom.xml'
+      displayName: 'Maven Compile'
       inputs:
         goals: compile
         options: '-Dmaven.test.skip=true'
         publishJUnitResults: false
 
     - task: Maven@3
-      displayName: 'Maven $(mavenPOMFile)'
+      displayName: 'Maven Build'
       inputs:
         mavenPomFile: pom.xml
+        options: '-Dmaven.test.skip=true'
         publishJUnitResults: false
     
     - task: CopyFiles@2
