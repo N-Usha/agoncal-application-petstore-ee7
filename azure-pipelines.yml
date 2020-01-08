@@ -47,7 +47,7 @@ jobs:
           - task: AzureWebApp@1
             displayName: 'Azure Web App Deploy: LinuxWildflyApp'
             inputs:
-              azureSubscription: 'RMPM'
+              azureSubscription: 'RMPM (afc11291-9826-46be-b852-70349146ddf8)'
               appType: webAppLinux
               appName: LinuxWildflyApp
               package: '$(build.artifactstagingdirectory)/**/*.war'
