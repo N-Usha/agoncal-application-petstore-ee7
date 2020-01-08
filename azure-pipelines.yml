@@ -35,7 +35,7 @@ jobs:
   - deployment: Deployjob
     displayName: Deploy job
     dependsOn: MavenBuild
-    environment: 'SmartHotel.notifications'
+    environment: 'PetStore'
     strategy:
       runOnce:
         deploy:
