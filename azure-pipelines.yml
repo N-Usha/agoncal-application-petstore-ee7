@@ -3,38 +3,42 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-jobs:
-  - job: MavenBuild
-    steps:
-    - task: Maven@3
-      displayName: 'Maven Compile'
-      inputs:
-        goals: compile
-        options: '-Dmaven.test.skip=true'
-        publishJUnitResults: false
+stages:
+- stage: Build 
+  jobs:
+    - job: MavenBuild
+      steps:
+      - task: Maven@3
+        displayName: 'Maven Compile'
+        inputs:
+          goals: compile
+          options: '-Dmaven.test.skip=true'
+          publishJUnitResults: false
 
-    - task: Maven@3
-      displayName: 'Maven Build'
-      inputs:
-        mavenPomFile: pom.xml
-        options: '-Dmaven.test.skip=true'
-        publishJUnitResults: false
-    
-    - task: CopyFiles@2
-      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-      inputs:
-        SourceFolder: '$(system.defaultworkingdirectory)'
-        Contents: '**/*.war'
-        TargetFolder: '$(build.artifactstagingdirectory)'
+      - task: Maven@3
+        displayName: 'Maven Build'
+        inputs:
+          mavenPomFile: pom.xml
+          options: '-Dmaven.test.skip=true'
+          publishJUnitResults: false
+      
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+        inputs:
+          SourceFolder: '$(system.defaultworkingdirectory)'
+          Contents: '**/*.war'
+          TargetFolder: '$(build.artifactstagingdirectory)'
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifacts: drop'
-      inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
-  
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifacts: drop'
+        inputs:
+          PathtoPublish: '$(build.artifactstagingdirectory)'
+
+- stage: Deploy
+  dependsOn: Build 
+  jobs:
   - deployment: Deployjob
     displayName: Deploy job
-    dependsOn: MavenBuild
     environment: 'PetStore'
     strategy:
       runOnce:
