@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "limacluster-59a0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "limacluster-59a0"
+  template:
+    metadata:
+      labels:
+        app: "limacluster-59a0"
+    spec:
+      containers:
+        - name: "limacluster-59a0"
+          image: "887eccb0ccc54936b06995fa941e2237.azurecr.io/limacluster"
+          ports:
+          - containerPort: 80
